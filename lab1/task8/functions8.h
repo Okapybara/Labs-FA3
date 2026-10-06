@@ -15,7 +15,7 @@ typedef enum status{
     ERR_OVERFLOW, // переполнение
     EMPTY_FILE, // пустой файл (только из пробелов и тд)
     SAME_FILES, // одинаковые имена файлов
-    NOT_TEXT, // не текстовый файл
+    NOT_TEXT // не текстовый файл
 } status;
 
 #define MAX_WORD_LEN 4000

@@ -10,7 +10,7 @@ typedef enum status{
     ERR_INVALID, // наличие неверных значений
     ERR_READ, // ошибка чтения
     ERR_INVALID_BASE, // неверная система счисления
-    ERR_OVERFLOW, // переполнение
+    ERR_OVERFLOW // переполнение
 } status;
 
 
