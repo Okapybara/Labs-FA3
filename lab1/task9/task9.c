@@ -1,5 +1,6 @@
 #include "functions9.h"
 
+
 int main(int argc, char *argv[]){
     srand(time(NULL)); // для псевдослучайных чисел
 
@@ -40,20 +41,22 @@ int main(int argc, char *argv[]){
 
     int flag_static = 0; // на ошибку статического массива
     int flag_dynamic = 0; // на ошибку динамического массива
+    long long  range_ll = 0;
 
     printf("1) Статический массив:\n");
     if (b <= a){
         printf("Недопустимый массив. Второе число должно быть больше.\n");
         flag_static = 1;
     }
-    
     // заранее проверяем на возможность генерации псевдослучайных чисел
-    long long range_ll = (long long)b - (long long)a + 1; // чтобы не произошло переполнения
-    if (range_ll > RAND_MAX) {
-        printf("Диапазон [%d..%d] слишком большой для генератора случайных чисел.\n", a, b);
+    else {
+        range_ll = (long long)b - (long long)a + 1; // чтобы не произошло переполнения
+        if (range_ll > RAND_MAX) {
+            printf("Диапазон [%d..%d] слишком большой для генератора случайных чисел.\n", a, b);
             flag_static = 1;
+        }
     }
-    
+
     
     // заполнение статического
     if (!flag_static){
