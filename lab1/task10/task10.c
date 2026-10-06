@@ -2,31 +2,45 @@
 
 
 int main(int argc, char *argv[]){
-    if (argc != 2){
-        printf("Некорректный ввод. Напишите %s <base>.\n", argv[0]);
+    if (argc != 1){
+        printf("Некорректный ввод. Напишите %s.\n", argv[0]);
+        return 1;
+    }
+
+    char base_str[5];
+    printf("Введите основание системы счисления (от 2 до 36): ");
+    
+    if (scanf("%4s", base_str) != 1) {
+        printf("Ошибка чтения ввода.\n");
+        return 1;
+    } 
+    
+    int next = getchar();
+    if (next != ' ' && next != '\n' && next != '\t' && next != '\r' && next != EOF) {
+        printf("Ошибка чтения ввода. Переполнение.\n");
         return 1;
     }
 
     // проверка правильного ввода основания системы счисления
-    if (argv[1][0] == '\0'){
+    if (base_str[0] == '\0'){
         printf("Неправильно введено число.\n");
         return 1;
     }
     
-    for (int i = 0; argv[1][i] != '\0'; i++){
-        if (!isdigit((unsigned char)argv[1][i])){
+    for (int i = 0; base_str[i] != '\0'; i++){
+        if (!isdigit((unsigned char)base_str[i])){
             printf("Неправильно введено число.\n");
             return 1;
         }
     }
 
-    if (Overflow(argv[1])){
+    if (Overflow(base_str)){
         printf("Переполнение.\n");
         return 1;
     }
 
     
-    int base = atoi(argv[1]); // основание сс
+    int base = atoi(base_str); // основание сс
     if (base < 2 || base > 36) {
         printf("Основание системы счисления должно быть от 2 до 36.\n");
         return 1;
