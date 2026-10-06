@@ -11,7 +11,7 @@ typedef enum status{
     ERR_NULL, // указатель нулевой
     ERR_INVALID_CHAR, // наличие неверных значений в файле
     ERR_INVALID_NAME, // неверный ввод имени файла
-    ERR_INVALID_BASE, // неверная система счисления ?? нужна или нет потом
+    ERR_INVALID_BASE, // неверная система счисления
     ERR_OVERFLOW, // переполнение
     EMPTY_FILE, // пустой файл (только из пробелов и тд)
     SAME_FILES, // одинаковые имена файлов
