@@ -59,7 +59,6 @@ status Overflow(const char *str){
 }
 
 
-
 // функция для статического массива
 status static_array(int *arr, const int size, int *res_min, int *res_max) {
     if (arr == NULL || res_min == NULL || res_max == NULL) return ERR_NULL;
@@ -79,6 +78,47 @@ status static_array(int *arr, const int size, int *res_min, int *res_max) {
     int temp = arr[min_idx];
     arr[min_idx] = arr[max_idx];
     arr[max_idx] = temp;
+
+    return SUCCESS;
+}
+
+
+// функция для динамического массива (2 задание)
+status fill_arr_c (const int* arrA, const int sizeA, const int* arrB, const int sizeB, int* arrC){
+    if (arrA == NULL || arrB == NULL || arrC == NULL) return ERR_NULL;
+    if (sizeA <= 0 || sizeB <= 0) return ERR_INVALID;
+
+    for (int i = 0; i < sizeA; i++) {
+        int min_diff = INT_MAX;
+        int closest = 0;
+        for (int j = 0; j < sizeB; j++) {
+            int diff = abs(arrA[i] - arrB[j]);
+
+            if (diff < min_diff){
+                min_diff = diff;
+                closest = arrB[j];
+            }
+        }
+        
+        arrC[i] = arrA[i] + closest;
+    }
+
+    return SUCCESS;
+}
+
+
+// вывод динамических массивов
+status print_array(const int *arr, const int size, const char *name) {
+    if (arr == NULL) return ERR_NULL;
+    if (size <= 0) return ERR_INVALID;
+
+    printf("%s (первые 10 элементов): ", name);
+    int limit = (size < 10) ? size : 10;
+    
+    for (int i = 0; i < limit; i++) printf("%d ", arr[i]);
+    if (size > 10) printf("...");
+
+    putchar('\n');
 
     return SUCCESS;
 }

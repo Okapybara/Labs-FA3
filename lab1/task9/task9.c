@@ -57,8 +57,6 @@ int main(int argc, char *argv[]){
         }
     }
 
-    
-    // заполнение статического
     if (!flag_static){
         int static_arr[STATIC_SIZE];
 
@@ -88,11 +86,50 @@ int main(int argc, char *argv[]){
         putchar('\n');
     }
 
+    putchar('\n');
     printf("2) Динамические массивы:\n");
+    int *arr_a = NULL;
+    int *arr_b = NULL;
+    int *arr_c = NULL;
 
+    // пседвослучайный размер
+    int sizeA = 10 + (rand() % (10000 - 10 + 1));
+    int sizeB = 10 + (rand() % (10000 - 10 + 1));
 
+    arr_a = (int*) malloc(sizeA * sizeof(int));
+    arr_b = (int*) malloc(sizeB * sizeof(int));
+    arr_c = (int*) malloc(sizeA * sizeof(int)); // размер как у а, тк по заданию
 
+    if (arr_a == NULL || arr_b == NULL || arr_c == NULL) {
+        printf("Не удалось выделить память.\n");
+        flag_dynamic = 1;
+    }
 
+    if (!flag_dynamic) {
+        for (int i = 0; i < sizeA; i++)
+            arr_a[i] = -1000 + (rand() % (1000-(-1000)+1));
+
+        for (int i = 0; i < sizeB; i++)
+            arr_b[i] = -1000 + (rand() % (1000-(-1000)+1));
+
+        if (fill_arr_c(arr_a, sizeA, arr_b, sizeB, arr_c) != SUCCESS){
+            printf("Ошибка при создании динамического массива C.\n");
+            free(arr_a);
+            free(arr_b);
+            free(arr_c);
+            return 1;
+        }
+
+        // вывод для 2 номера
+        printf("Размер A: %d, Размер B: %d\n", sizeA, sizeB);
+        print_array(arr_a, sizeA, "Массив A");
+        print_array(arr_b, sizeB, "Массив B");
+        print_array(arr_c, sizeA, "Массив C");
+    }
+
+    free(arr_a);
+    free(arr_b);
+    free(arr_c);
 
     if (flag_static == 1 && flag_dynamic == 1) {
         printf("\n Оба задания завершились с ошибками.\n");
