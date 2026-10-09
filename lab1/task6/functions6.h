@@ -107,16 +107,16 @@ status str_to_ll(const char *str, int base, long long *out_val) {
     if (base < 2 || base > 36) return ERR_INVALID;
 
     long long val = 0;
-    int i = 0;
+    int start = 0;
 
-    while (str[i] == '0') i++;
+    while (str[start] == '0') start++;
     
-    if (str[i] == '\0') {
+    if (str[start] == '\0') {
         *out_val = 0;
         return SUCCESS;
     }
 
-    for (; str[i] != '\0'; i++) {
+    for (int i = start; str[i] != '\0'; i++) {
         int digit = -1;
         
         if (str[i] >= '0' && str[i] <= '9') digit = str[i] - '0';
