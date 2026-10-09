@@ -33,18 +33,18 @@ int main(){
                     break;
                 }
 
-                printf("Введите координаты вершин (x y) по порядку обхода:\n");
+                printf("Введите координаты вершин (x y):\n");
                 int input_error = 0;
                 for (int i = 0; i < n; i++) {
-                    printf("Вершина %d (x y): ", i+1);
-                    
                     // для x
+                    printf("Вершина %d (x): ", i+1);
                     if (read_double(buf_double, &coords[i*2]) != SUCCESS) {
                         print_error(ERR_INVALID);
                         input_error = 1; break;
                     }
 
                     // для y
+                    printf("Вершина %d (y): ", i+1);
                     if (read_double(buf_double, &coords[i*2+1]) != SUCCESS) {
                         print_error(ERR_INVALID);
                         input_error = 1; break;
@@ -209,7 +209,7 @@ int main(){
                 }
 
                 status st = func5(x, power, &result);
-                if (st == SUCCESS) printf("✅ Результат: %.5f ^ %d = %.5f\n", x, power, result);
+                if (st == SUCCESS) printf("Результат: %.5f ^ %d = %.5f\n", x, power, result);
                 else print_error(st);
 
                 break;
