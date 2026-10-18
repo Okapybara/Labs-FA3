@@ -61,8 +61,19 @@ status unsigned_int(const char *str, unsigned int* seed) {
 }
 
 
+status validate_ascii(const char *str) {
+    if (str == NULL) return NULL;
+
+    for (unsigned int i = 0; str[i] != '\0'; i++){
+        if ((unsigned int)str[i] > 127) return ERR_INVALID;
+    }
+
+    return SUCCESS;
+}
+
 status FlagL(const char *str, unsigned int *res) {
     if (str == NULL || res == NULL) return ERR_NULL;
+    if (validate_ascii(str) != SUCCESS) return ERR_INVALID;
 
     unsigned int len = 0;
     while (str[len] != '\0') {
@@ -77,6 +88,7 @@ status FlagL(const char *str, unsigned int *res) {
 
 status FlagR(const char *str, char **res_str) {
     if (str == NULL || res_str == NULL) return ERR_NULL;
+    if (validate_ascii(str) != SUCCESS) return ERR_INVALID;
     
     unsigned int len = 0;
     while (str[len] != '\0') {
@@ -99,6 +111,7 @@ status FlagR(const char *str, char **res_str) {
 
 status FlagU(const char *str, char **res_str) {
     if (str == NULL || res_str == NULL) return ERR_NULL;
+    if (validate_ascii(str) != SUCCESS) return ERR_INVALID;
 
     unsigned int len = 0;
     while (str[len] != '\0') {
@@ -123,6 +136,7 @@ status FlagU(const char *str, char **res_str) {
 
 status FlagN(const char *str, char **res_str) {
     if (str == NULL || res_str == NULL) return ERR_NULL;
+    if (validate_ascii(str) != SUCCESS) return ERR_INVALID;
 
     unsigned int len = 0;
     while (str[len] != '\0') {
