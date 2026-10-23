@@ -1,0 +1,6 @@
+15 Ivan Petrov 50000.50
+3 Anna Sidorova 75000.00
+22 Dmitry Ivanov 50000.50
+
+8 Olga Smirnova 120000.75
+100 Boris Borisov 30000.00
