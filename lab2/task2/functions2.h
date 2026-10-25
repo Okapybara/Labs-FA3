@@ -21,13 +21,12 @@ typedef enum status {
     NOT_TEXT // не текстовый файл
 } status;
 
-#define MAX_NAME_LEN 256
 #define EPSILON 1e-9 // для вещественных чисел
 
 typedef struct Employee {
     unsigned int id;
-    char name[MAX_NAME_LEN];
-    char surname[MAX_NAME_LEN];
+    char *name;
+    char *surname;
     double salary;
 } Employee;
 
@@ -164,9 +163,8 @@ status validate_double(const char *str, const char **endptr, double *salary) {
 }
 
 // проверяет слово имя/фамилию
-status validate_word(const char *str, const char **endptr, char *word, int max_len) {
+status validate_word(const char *str, const char **endptr, char **word) {
     if (str == NULL || endptr == NULL || word == NULL) return ERR_NULL;
-    if (max_len == 0) return ERR_INVALID;
 
     const char *p = str;
     int len = 0;
@@ -174,12 +172,11 @@ status validate_word(const char *str, const char **endptr, char *word, int max_l
     while (isspace((unsigned char)*p)) p++;
     if (*p == '\0') return ERR_INVALID;
 
+    const char *start = p;
+
     while (*p != '\0') {
         unsigned char c = (unsigned char)*p;
         if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            if (len >= max_len - 1) return ERR_OVERFLOW;
-            
-            word[len] = (char)c;
             len++;
             p++;
         }
@@ -188,7 +185,14 @@ status validate_word(const char *str, const char **endptr, char *word, int max_l
 
     if (len == 0) return ERR_INVALID;
 
-    word[len] = '\0';
+    *word = (char *)malloc((len + 1) * sizeof(char));
+    if (*word == NULL) return ERR_MEMORY;
+
+    for (int i = 0; i < len; i++) 
+        (*word)[i] = start[i];
+
+    (*word)[len] = '\0';
+
     *endptr = p;
     return SUCCESS;
 }
@@ -197,6 +201,9 @@ status validate_word(const char *str, const char **endptr, char *word, int max_l
 status validate_employee(const char *line, Employee *emp) {
     if (line == NULL || emp == NULL) return ERR_NULL;
 
+    emp->name = NULL;
+    emp->surname = NULL;
+
     const char *p = line;
     const char *next_p = NULL;
 
@@ -204,11 +211,11 @@ status validate_employee(const char *line, Employee *emp) {
     if (res != SUCCESS) return res;
     p = next_p;
 
-    res = validate_word(p, &next_p, emp->name, MAX_NAME_LEN);
+    res = validate_word(p, &next_p, &emp->name);
     if (res != SUCCESS) return res;
     p = next_p;
 
-    res = validate_word(p, &next_p, emp->surname, MAX_NAME_LEN);
+    res = validate_word(p, &next_p, &emp->surname);
     if (res != SUCCESS) return res;
     p = next_p;
 
@@ -217,6 +224,19 @@ status validate_employee(const char *line, Employee *emp) {
     p = next_p;
 
     if (*p != '\0') return ERR_INVALID; 
+    return SUCCESS;
+}
+
+// удаление массива сотрудников и имен/фамилий внутри
+status free_employees(Employee *array, int count) {
+    if (array == NULL) return SUCCESS;
+    
+    for (int i = 0; i < count; i++) {
+        free(array[i].name);
+        free(array[i].surname);
+    }
+    
+    free(array);
     return SUCCESS;
 }
 
@@ -250,7 +270,7 @@ status read_employees(FILE *fin, Employee **out_array, int *out_count) {
         status res = validate_employee(line, &array[count]);
         
         if (res != SUCCESS) {
-            free(array);
+            free_employees(array, count);
             return res;
         }
 
@@ -258,7 +278,7 @@ status read_employees(FILE *fin, Employee **out_array, int *out_count) {
     }
 
     if (ferror(fin)) {
-        free(array);
+        free_employees(array, count);
         return ERR_READ;
     }
 

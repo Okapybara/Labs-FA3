@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
     res = sort(array, count, flag_letter);
     if (res != SUCCESS) {
         print_error(res);
-        free(array);
+        free_employees(array, count);
         return 1;
     }
 
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
     FILE *fout = fopen(out_file, "w");
     if (fout == NULL) {
         printf("Не удалось открыть выходной файл '%s'.\n", out_file);
-        free(array);
+        free_employees(array, count);
         return 1;
     }
 
@@ -67,10 +67,10 @@ int main(int argc, char *argv[]){
 
     if (res != SUCCESS){
         print_error(res);
-        free(array);
+        free_employees(array, count);
         return 1;
     }
 
-    free(array);
+    free_employees(array, count);
     return 0;
 }
