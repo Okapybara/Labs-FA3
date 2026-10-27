@@ -59,6 +59,7 @@ int main(int argc, char *argv[]){
 
     if (search_res != SUCCESS) {
         print_error(search_res);
+        free(search_str);
         return 1;
     }
 
