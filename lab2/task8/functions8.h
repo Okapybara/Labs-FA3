@@ -33,7 +33,7 @@ void print_error(status err) {
 }
 
 // переполнение для количества чисел + основания системы счисления
-int Overflow_INT(const char *str){
+status Overflow_INT(const char *str){
     if (str == NULL) return ERR_NULL;
 
     char str_int_max[20];

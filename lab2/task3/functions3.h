@@ -67,7 +67,7 @@ status text_extension(const char *file) {
 
 
 // переполнение 
-int Overflow_INT(const char *str){
+status Overflow_INT(const char *str){
     if (str == NULL) return ERR_NULL;
 
     char str_int_max[20];
