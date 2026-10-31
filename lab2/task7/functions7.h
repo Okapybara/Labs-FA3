@@ -153,6 +153,29 @@ status read_string(char **out_str, int *out_len) {
 }
 
 
+// быстрое возведение в степень только для положительных, так как p>=1
+status fastpow(const double x, const int power, double *res) {
+    if (res == NULL) return ERR_NULL;
+    if (power < 0) return ERR_INVALID;
+    
+    if (power == 0) {
+        *res = 1.0;
+        return SUCCESS;
+    }
+
+    double half_res;
+    status res_h = fastpow(x, power/2, &half_res);
+    if (res_h != SUCCESS) return res_h;
+
+    if (power % 2 == 0) *res = half_res * half_res;
+    else *res = half_res * half_res * x;
+
+    if (isinf(*res) || isnan(*res)) return ERR_OVERFLOW;
+
+    return SUCCESS;
+}
+
+
 status norm_inf(const double *coords, int n, void *params, double *out_norm) {
     if (coords == NULL || out_norm == NULL) return ERR_NULL;
     if (n <= 0) return ERR_INVALID;
@@ -175,7 +198,9 @@ status norm_p(const double *coords, int n, void *params, double *out_norm) {
     
     double sum = 0.0;
     for (int i = 0; i < n; i++) {
-        double term = pow(fabs(coords[i]), (double)p);
+        double term = 0.0;
+        status res_pow = fastpow(fabs(coords[i]), p, &term);
+        if (res_pow != SUCCESS) return res_pow;
         if (isinf(term) || isnan(term)) return ERR_OVERFLOW;
         sum += term;
         if (isinf(sum) || isnan(sum)) return ERR_OVERFLOW;
