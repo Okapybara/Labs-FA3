@@ -10,7 +10,7 @@ typedef enum status {
     ERR_INVALID, // наличие неверных значений
     ERR_OVERFLOW, // переполнение
     ERR_NEGATIVE, // неотрицательность числа
-    ERR_INVALID_ARGC, // количество аргументов
+    ERR_INVALID_ARGC // количество аргументов
 } status;
 
 
