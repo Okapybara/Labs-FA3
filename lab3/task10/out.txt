@@ -1,0 +1,52 @@
+Дерево 1:
+A
+  B
+    E
+      G
+      T
+      R
+        W
+        Z
+    F
+      L
+      M
+  C
+
+Дерево 2:
+A
+  B
+    E
+      G
+      T
+      R
+        W
+        Z
+    F
+      L
+      M
+  C
+
+Дерево 3:
+SingleNode
+
+Дерево 4:
+Root
+  Child1
+  Child2
+  Child3
+  Child4
+  Child5
+
+Дерево 5:
+A
+  B
+    C
+      D
+        E
+
+Дерево 6:
+Node123
+  ChildA1
+  ChildB2
+    GrandChild3
+

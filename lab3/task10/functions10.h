@@ -126,6 +126,21 @@ int is_valid_name(unsigned char c) {
     return 0;
 }
 
+int find_prev_significant(const char *line, int i) {
+    while (i > 0) {
+        i--;
+        if (line[i] != ' ') return i;
+    }
+    return -1;
+}
+
+int find_next_significant(const char *line, int i, int len) {
+    for (int j = i + 1; j < len; j++) {
+        if (line[j] != ' ') return j;
+    }
+    return -1;
+}
+
 // проверка на корректность строки
 status validate_line(const char *line) {
     if (line == NULL) return ERR_NULL;
@@ -137,6 +152,7 @@ status validate_line(const char *line) {
 
     for (size_t i = 0; i < len; i++) {
         unsigned char c = (unsigned char)line[i];
+        if (c == ' ') continue;
 
         if (!is_valid_name(c) && c != '(' && c != ')' && c != ',') return ERR_INVALID;
 
@@ -147,9 +163,14 @@ status validate_line(const char *line) {
         } 
         else if (c == ',') {
             if (i == 0 || i == len - 1) return ERR_INVALID;
-            if (line[i - 1] == '(') return ERR_INVALID;
-            if (line[i + 1] == ')') return ERR_INVALID;
-            if (line[i + 1] == ',') return ERR_INVALID;
+            int prev_idx = find_prev_significant(line, i);
+            int next_idx = find_next_significant(line, i, len);
+
+            if (prev_idx == -1) return ERR_INVALID;
+            if (next_idx == -1) return ERR_INVALID;
+            if (line[prev_idx] == '(') return ERR_INVALID;
+            if (line[next_idx] == ')') return ERR_INVALID;
+            if (line[next_idx] == ',') return ERR_INVALID;
         }
     }
 
@@ -205,6 +226,8 @@ void print_tree(FILE *out, const Node *root, int depth) {
 status parse_node(const char *str, int *index, Node **out_node) {
     if (str == NULL || index == NULL || out_node == NULL) return ERR_NULL;
 
+    while (str[*index] == ' ') (*index)++;
+
     int start = *index;
 
     while (str[*index] != '\0' && is_valid_name((unsigned char)str[*index])) {
@@ -216,6 +239,8 @@ status parse_node(const char *str, int *index, Node **out_node) {
 
     Node *node = create_node(str + start, len);
     if (node == NULL) return ERR_MEMORY;
+
+    while (str[*index] == ' ') (*index)++;
 
     if (str[*index] == '(') {
         (*index)++;
@@ -239,6 +264,8 @@ status parse_node(const char *str, int *index, Node **out_node) {
                 last_child->next_sibling = child;
                 last_child = child;
             }
+
+            while (str[*index] == ' ') (*index)++;
 
             if (str[*index] == ',') (*index)++;
             else if (str[*index] != ')') {

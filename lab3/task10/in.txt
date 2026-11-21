@@ -1,0 +1,6 @@
+A(B(E(G,T,R(W,Z)),F(L,M)),C)
+A (B (E (G, T, R (W, Z)), F (L, M)), C)
+SingleNode
+Root(Child1,Child2,Child3,Child4,Child5)
+A(B(C(D(E))))
+Node123(ChildA1,ChildB2(GrandChild3))
