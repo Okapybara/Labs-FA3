@@ -234,14 +234,14 @@ status parse_node(const char *str, int *index, Node **out_node) {
             if (first_child == NULL) {
                 first_child = child;
                 last_child = child;
-            } else {
+            } 
+            else {
                 last_child->next_sibling = child;
                 last_child = child;
             }
 
-            if (str[*index] == ',') {
-                (*index)++;
-            } else if (str[*index] != ')') {
+            if (str[*index] == ',') (*index)++;
+            else if (str[*index] != ')') {
                 free_tree(node);
                 return ERR_INVALID;
             }
