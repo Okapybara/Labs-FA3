@@ -263,15 +263,14 @@ status schedule_reports(const Report *reports, int n, int k, int *out_max_report
 
     int count = 0;
     for (int i = 0; i < n; i++) {
-        int best_hall = 0;
-        // ищем зал который освободится раньше всех
-        for (int j = 1; j < k; j++) {
-            if (halls[j] < halls[best_hall]) {
+        int best_hall = -1;
+        for (int j = 0; j < k; j++) {
+            if (halls[j] <= sorted_reports[i].start_time && (best_hall == -1 || halls[j] > halls[best_hall])) {
                 best_hall = j;
             }
         }
 
-        if (halls[best_hall] <= sorted_reports[i].start_time) {
+        if (best_hall != -1) {
             halls[best_hall] = sorted_reports[i].finish_time;
             count++;
         }
